@@ -1,5 +1,5 @@
 /**
- * @module app.js
+ * @module index.js
  *
  * @author Austin Bieber
  */
@@ -11,6 +11,9 @@ const path = require('path');
 // NPM Modules
 const express = require('express');
 
+// Internal Modules
+const db = require('./app/lib/db');
+
 
 // Initialize the app
 const app = express();
@@ -18,6 +21,8 @@ const app = express();
 // Set global config parameter
 const conf = fs.readFileSync(path.join(__dirname, 'config', 'default.json'));
 global.config = JSON.parse(conf.toString());
+
+db.connect();
 
 // Startup application, listening on specified port
 app.listen(config.server.port, () => {

@@ -1,4 +1,9 @@
 {
+  "db": {
+    "url": "localhost",
+    "port": 27017,
+    "name": "coin-catalog"
+  },
   "server": {
     "port": 1414
   }
