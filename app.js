@@ -4,12 +4,22 @@
  * @author Austin Bieber
  */
 
+// Node Modules
+const fs = require('fs');
+const path = require('path');
+
 // NPM Modules
 const express = require('express');
+
 
 // Initialize the app
 const app = express();
 
-app.listen(1414, () => {
-  console.log("Listening on port 1414");
+// Set global config parameter
+const conf = fs.readFileSync(path.join(__dirname, 'config', 'default.json'));
+global.config = JSON.parse(conf.toString());
+
+// Startup application, listening on specified port
+app.listen(config.server.port, () => {
+  console.log(`Listening on port ${config.server.port}`);
 });
