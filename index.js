@@ -8,23 +8,20 @@
 const fs = require('fs');
 const path = require('path');
 
-// NPM Modules
-const express = require('express');
-
-// Internal Modules
-const db = require('./app/lib/db');
-
-
-// Initialize the app
-const app = express();
-
 // Set global config parameter
 const conf = fs.readFileSync(path.join(__dirname, 'config', 'default.json'));
 global.config = JSON.parse(conf.toString());
+global.rootdir = __dirname;
 
-db.connect();
+// Handle command line input
+if (process.argv.length < 3) {
+  console.log("Invalid number of arguments.");
+  process.exit(-1);
+}
 
-// Startup application, listening on specified port
-app.listen(config.server.port, () => {
-  console.log(`Listening on port ${config.server.port}`);
-});
+const subcommand = process.argv[2];
+
+// Run a different script depending on the subcommand provided
+const script = require(`./scripts/${subcommand}`);
+script(process.argv);
+
