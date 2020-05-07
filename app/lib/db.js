@@ -17,7 +17,9 @@ function connect() {
   // Define options, most of which remove deprecation warnings
   const options = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
   };
 
   mongoose.connect(`mongodb://${config.db.url}:${config.db.port}/${config.db.name}`, options);

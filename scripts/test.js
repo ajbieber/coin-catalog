@@ -54,7 +54,6 @@ function traverseSubdirectory(dir, m) {
 
   // Add each file to mocha object
   files.forEach((f) => {
-    console.log(f);
     m.addFile(path.join(dir, f));
   });
 }
