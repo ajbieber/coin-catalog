@@ -3,7 +3,7 @@
  *
  * @author Austin Bieber
  *
- * @description Defines the user database model
+ * @description Defines the user database model.
  */
 
 // Node Modules
@@ -12,10 +12,15 @@ const crypto = require('crypto');
 // NPM Modules
 const mongoose = require('mongoose');
 
+// Internal Modules
+const validate = require('../lib/validate');
+
+
 const UserSchema = mongoose.Schema({
   _id: {
     type: String,
-    required: true
+    required: true,
+    validate: validate.User._id
   },
   password: {
     type: String,
@@ -29,6 +34,10 @@ const UserSchema = mongoose.Schema({
   }
 });
 
+/**
+ * @description Pre Middleware which is triggered on the save call. Checks to
+ * see if the password has been modified, and if so hashes it.
+ */
 UserSchema.pre('save', function(next) {
   // If the password has been updated
   if (this.isModified('password')) {

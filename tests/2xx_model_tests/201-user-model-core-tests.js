@@ -1,5 +1,5 @@
 /**
- * @module tests.201-user-model-tests
+ * @module tests.201-user-model-core-tests
  *
  * @author Austin Bieber
  *
@@ -15,7 +15,7 @@ const chai = require('chai');
 // Internal Modules
 const User = require('../../app/models/user');
 
-describe('201-user-model-tests', () => {
+describe('201-user-model-core-tests', () => {
   it('should create a new user', testCreateUser);
   it('should delete a user', testRemoveUser);
 });
@@ -36,11 +36,11 @@ async function testCreateUser() {
   await userObj.save();
 
   // Find the user in the database
-  const createdUser = User.findById(userObj._id);
+  const createdUser = await User.findById(userObj._id);
 
   // Verify the fields match
   chai.expect(createdUser._id).to.equal(userObj._id);
-  chai.expect(createdUser.tags).to.should.have.members(userObj.tags);
+  chai.expect(createdUser.tags).to.have.members(userObj.tags);
   chai.expect(createdUser.email).to.equal(userObj.email);
 
   // Hash the user's password, and verify it matches the password stored in db
