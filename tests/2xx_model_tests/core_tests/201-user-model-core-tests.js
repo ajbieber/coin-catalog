@@ -13,7 +13,7 @@ const crypto = require('crypto');
 const chai = require('chai');
 
 // Internal Modules
-const User = require('../../app/models/user');
+const User = require('../../../app/models/user');
 
 describe('201-user-model-core-tests', () => {
   it('should create a new user', testCreateUser);
