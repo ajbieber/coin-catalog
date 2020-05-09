@@ -3,7 +3,7 @@
  *
  * @author Austin Bieber
  *
- * @description Tests the basic CRUD operations of the user model
+ * @description Tests the basic CRUD operations of the collection model
  */
 
 // NPM Modules
