@@ -24,7 +24,8 @@ const UserSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    validate: validate.User.password
+    validate: validate.User.password,
+    required: true
   },
   tags: {
     type: [String]
@@ -32,6 +33,7 @@ const UserSchema = mongoose.Schema({
   email: {
     type: String,
     unique: true,
+    required: true,
     validate: validate.User.email
   }
 });

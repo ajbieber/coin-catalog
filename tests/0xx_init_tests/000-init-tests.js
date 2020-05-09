@@ -11,7 +11,7 @@
 const chai = require('chai');
 
 describe('000-init-tests', () => {
-  it('should verify that 2 + 2 = 4', basicAssertion);
+  it('should verify that chai assertions work properly', basicAssertion);
 });
 
 /**

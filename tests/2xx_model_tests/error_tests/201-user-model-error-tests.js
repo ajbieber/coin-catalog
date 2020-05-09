@@ -3,7 +3,7 @@
  *
  * @author Austin Bieber
  *
- * @description Tests that error occur when expected when attempting specific
+ * @description Tests that errors occur when expected when attempting specific
  * CRUD operations via the User model.
  */
 

@@ -11,7 +11,7 @@
  * @description Validates the users username (_id).
  * @param {string} _id: The username to validate.
  */
-async function user_id(_id) {
+async function userID(_id) {
   // Minimum length of 4
   if (_id.length < 4) {
     throw new Error('Username must be at least 4 characters long.');
@@ -27,7 +27,7 @@ async function user_id(_id) {
  * @description Validates the users password.
  * @param {string} password: The password to validate.
  */
-async function user_password(password) {
+async function userPassword(password) {
   // Minimum length of 8
   if (password.length < 8) {
     throw new Error('Password must be at least 8 characters long.');
@@ -63,7 +63,7 @@ async function user_password(password) {
  * @description Validates the users email.
  * @param {string} email: The email to validate.
  */
-function user_email(email) {
+function userEmail(email) {
   // Maximum length of 254 characters, according to RFC 5321
   if (email.length > 254) {
     throw new Error('Email must be less than 254 characters long.');
@@ -75,11 +75,42 @@ function user_email(email) {
   }
 }
 
+/**
+ * @description Validates that the collection _id is a valid UUID.
+ * @param {string} _id: The _id to validate.
+ */
+function collectionID(_id) {
+  // Valid UUID
+  if (!RegExp(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/).test(_id)) {
+    throw new Error('_id must be a valid uuid.');
+  }
+}
+
+/**
+ * @description Validates the the collection name is within length limits.
+ * @param {string} name: The name to validate.
+ */
+function collectionName(name) {
+  // Minimum 2 characters
+  if (name.length < 2) {
+    throw new Error('Name must be at least 2 characters long.');
+  }
+
+  // Maximum 128 characters
+  if (name.length > 128) {
+    throw new Error('Name must be less than 128 characters long;');
+  }
+}
+
 
 module.exports = {
   User: {
-    _id: user_id,
-    password: user_password,
-    email: user_email
+    _id: userID,
+    password: userPassword,
+    email: userEmail
+  },
+  Collection: {
+    _id: collectionID,
+    name: collectionName
   }
 };
