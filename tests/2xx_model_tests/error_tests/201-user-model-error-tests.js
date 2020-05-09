@@ -27,6 +27,7 @@ describe('201-user-model-error-tests', () => {
   it('should fail creating a user whose password doesn\'t contain a number', testCreateUserPasswordNoNumber);
   it('should fail creating a user whose password doesn\'t contain a special'
     + ' character', testCreateUserPasswordNoSpecialCharacter);
+  it('should fail creating a user whose email isn\'t valid', testCreateUserEmailNotValid);
 });
 
 /**
@@ -42,11 +43,15 @@ async function testCreateUserUsernameTooShort() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' _id: Username must be at least 4 characters long.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' _id: Username must be at least 4 characters long.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -62,11 +67,15 @@ async function testCreateUserUsernameTooLong() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' _id: Username must be less than 32 characters long.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' _id: Username must be less than 32 characters long.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -82,11 +91,15 @@ async function testCreateUserPasswordTooShort() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must be at least 8 characters long.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must be at least 8 characters long.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -102,11 +115,15 @@ async function testCreateUserPasswordTooLong() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must be less than 32 characters long.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must be less than 32 characters long.');
+  }
+  catch (error) {
+      // If the assertion failed, ensure user is removed from database
+      await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -122,11 +139,15 @@ async function testCreateUserPasswordNoLowercase() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must contain at least one lowercase letter.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must contain at least one lowercase letter.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -142,11 +163,15 @@ async function testCreateUserPasswordNoUppercase() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must contain at least one uppercase letter.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must contain at least one uppercase letter.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -162,11 +187,15 @@ async function testCreateUserPasswordNoNumber() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must contain at least one number.');
-
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must contain at least one number.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }
 
 /**
@@ -182,9 +211,37 @@ async function testCreateUserPasswordNoSpecialCharacter() {
     email: 'test00@coins.com'
   });
 
-  // Create the user
-  await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
-    + ' password: Password must contain at least one special character.');
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' password: Password must contain at least one special character.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
+}
 
-  // TODO: Add logic to ensure that if this test fails and user is created, they are deleted from DB
+/**
+ * @description Tests that a user fails to be created when their email is not
+ * valid
+ */
+async function testCreateUserEmailNotValid() {
+  // Define the user
+  const userObj = new User({
+    _id: 'testuser00',
+    password: 'ABCabc123!!',
+    tags: ['US', 'World'],
+    email: 'invalidemail'
+  });
+
+  try {
+    // Create the user
+    await chai.expect(userObj.save()).to.be.rejectedWith('User validation failed:'
+      + ' email: Not a valid email address.');
+  }
+  catch (error) {
+    // If the assertion failed, ensure user is removed from database
+    await User.findByIdAndRemove(userObj._id);
+  }
 }

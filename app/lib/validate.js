@@ -23,6 +23,10 @@ async function user_id(_id) {
   }
 }
 
+/**
+ * @description Validates the users password.
+ * @param {string} password: The password to validate.
+ */
 async function user_password(password) {
   // Minimum length of 8
   if (password.length < 8) {
@@ -55,9 +59,27 @@ async function user_password(password) {
   }
 }
 
+/**
+ * @description Validates the users email.
+ * @param {string} email: The email to validate.
+ */
+function user_email(email) {
+  // Maximum length of 254 characters, according to RFC 5321
+  if (email.length > 254) {
+    throw new Error('Email must be less than 254 characters long.');
+  }
+
+  // Valid email format
+  if (!RegExp(/\S+@\S+\.\S+/).test(email)) {
+    throw new Error('Not a valid email address.');
+  }
+}
+
+
 module.exports = {
   User: {
     _id: user_id,
-    password: user_password
+    password: user_password,
+    email: user_email
   }
 };
