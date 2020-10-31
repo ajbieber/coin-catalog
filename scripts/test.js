@@ -21,7 +21,7 @@ function test() {
   const m = new mocha(opts);
 
   // Add the tests to the mocha obj
-  traverseSubdirectory(path.join(rootdir, 'tests'), m);
+  traverseSubdirectory(path.join(rootdir, 'test'), m);
 
   // Run the tests
   m.run((err) => {

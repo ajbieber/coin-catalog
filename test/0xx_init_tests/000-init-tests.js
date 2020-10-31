@@ -1,5 +1,5 @@
 /**
- * @module tests/0xx_init_tests/000-init-tests
+ * @module test/0xx_init_tests/000-init-tests
  *
  * @author Austin Bieber
  *

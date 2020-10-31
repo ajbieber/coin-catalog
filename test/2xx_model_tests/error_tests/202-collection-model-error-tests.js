@@ -1,5 +1,5 @@
 /**
- * @module tests.202-collection-model-error-tests
+ * @module tests.20-collection-model-error-tests
  *
  * @author Austin Bieber
  *

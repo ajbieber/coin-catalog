@@ -1,5 +1,5 @@
 /**
- * @module tests.203-coin-model-core-tests
+ * @module test.203-coin-model-core-tests
  *
  * @author Austin Bieber
  *

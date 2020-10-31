@@ -22,7 +22,8 @@ function connect() {
     useFindAndModify: false
   };
 
-  mongoose.connect(`mongodb://${config.db.url}:${config.db.port}/${config.db.name}`, options);
+  const db = global.config.db;
+  mongoose.connect(`mongodb://${db.url}:${db.port}/${db.name}`, options);
 }
 
 /**

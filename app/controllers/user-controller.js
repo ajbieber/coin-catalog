@@ -47,9 +47,22 @@ async function find(userID) {
 
 /**
  * @description Finds and updates a user.
- *
+ * @param {object} updatedUser: The updated user object.
+ * @returns {Promise<User>}
  */
-// TODO
+async function update(updatedUser) {
+  // Find the user
+  const user = await User.findById(updatedUser._id);
+
+  const id = updatedUser._id;
+  delete updatedUser._id;
+
+  // Update the user
+  await User.updateOne({ _id: id }, updatedUser);
+
+  // Return the updated user
+  return User.findById(id);
+}
 
 /**
  * @description Deletes a user and all of their content from the database.
@@ -70,6 +83,6 @@ async function remove(userID) {
 module.exports = {
   create,
   find,
-  // update,
+  update,
   remove
 };
