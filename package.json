@@ -1,0 +1,25 @@
+{
+  "name": "coin-catalog",
+  "version": "0.5.0",
+  "description": "A application for organizing coin collections",
+  "main": "index.js",
+  "repository": "https://github.com/ajbieber/coin-catalog.git",
+  "author": "Austin Bieber",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "concurrently": "^5.3.0",
+    "express": "^4.17.1",
+    "mocha": "^8.2.0",
+    "mongoose": "^5.10.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.3"
+  },
+  "scripts": {
+    "start": "concurrently \"node index.js\" \"react-scripts start\"",
+    "test": "node index.js test"
+  }
+}

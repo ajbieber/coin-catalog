@@ -47,18 +47,24 @@ async function find(userID) {
 
 /**
  * @description Finds and updates a user.
- * @param {object} updatedUser: The updated user object.
+ * @param {string} id: The users username/id.
+ * @param {object} updateObj: An object containing updates to the user
  * @returns {Promise<User>}
  */
-async function update(updatedUser) {
+async function update(id, updateObj) {
   // Find the user
-  const user = await User.findById(updatedUser._id);
+  const user = await User.findById(id);
 
-  const id = updatedUser._id;
-  delete updatedUser._id;
+  // Update each field in the user
+  Object.keys(updateObj).forEach((key) => {
+    // Ensure the property exists
+    if (user._doc.hasOwnProperty(key)) {
+      user[key] = updateObj[key];
+    }
+  });
 
   // Update the user
-  await User.updateOne({ _id: id }, updatedUser);
+  await user.save();
 
   // Return the updated user
   return User.findById(id);

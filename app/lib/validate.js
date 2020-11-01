@@ -28,34 +28,37 @@ async function userID(_id) {
  * @param {string} password: The password to validate.
  */
 async function userPassword(password) {
-  // Minimum length of 8
-  if (password.length < 8) {
-    throw new Error('Password must be at least 8 characters long.');
-  }
+  // Only validate password if it has changed
+  if (this.isModified('password')) {
+    // Minimum length of 8
+    if (password.length < 8) {
+      throw new Error('Password must be at least 8 characters long.');
+    }
 
-  // Minimum length of 32
-  if (password.length > 32) {
-    throw new Error('Password must be less than 32 characters long.');
-  }
+    // Minimum length of 32
+    if (password.length > 32) {
+      throw new Error('Password must be less than 32 characters long.');
+    }
 
-  // Has at least one lowercase letter
-  if (!RegExp('[a-z]').test(password)) {
-    throw new Error('Password must contain at least one lowercase letter.');
-  }
+    // Has at least one lowercase letter
+    if (!RegExp('[a-z]').test(password)) {
+      throw new Error('Password must contain at least one lowercase letter.');
+    }
 
-  // Has at least one uppercase letter
-  if (!RegExp('[A-Z]').test(password)) {
-    throw new Error('Password must contain at least one uppercase letter.');
-  }
+    // Has at least one uppercase letter
+    if (!RegExp('[A-Z]').test(password)) {
+      throw new Error('Password must contain at least one uppercase letter.');
+    }
 
-  // Has at least one number
-  if (!RegExp('[0-9]').test(password)) {
-    throw new Error('Password must contain at least one number.');
-  }
+    // Has at least one number
+    if (!RegExp('[0-9]').test(password)) {
+      throw new Error('Password must contain at least one number.');
+    }
 
-  // Has at least one special character
-  if (!RegExp(/[!@#\$%\^\&*\)\(+=,._-]/).test(password)) {
-    throw new Error('Password must contain at least one special character.');
+    // Has at least one special character
+    if (!RegExp(/[!@#\$%\^\&*\)\(+=,._-]/).test(password)) {
+      throw new Error('Password must contain at least one special character.');
+    }
   }
 }
 
