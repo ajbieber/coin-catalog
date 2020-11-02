@@ -43,6 +43,7 @@ describe('302-collection-controller-core-tests', () => {
    });
 
    it('should create a new collection', testCreateCollection);
+   it('should find a collection', testFindCollection);
    it('should delete a collection', testRemoveCollection);
 });
 
@@ -61,10 +62,23 @@ async function testCreateCollection() {
 }
 
 /**
+ * @descriptionTests that a collection can be found viua the collection
+ * controller.
+ */
+async function testFindCollection() {
+    // Attempt to find the collection
+    const foundCollection = await CollectionController.find(collectionID);
+
+    // Verify the fields match
+    chai.expect(createdCollection.name).to.equal(collectionObjData.name);
+    chai.expect(createdCollection.description).to.equal(collectionObjData.description);
+    chai.expect(createdCollection.user).to.equal(userObjData._id);
+}
+
+/**
  * @description Tests that a collection can be removed from the database. Attempts
  * to find the collection in the database to verify it was removed properly.
  */
-
 async function testRemoveCollection() {
     // Delete the collection
     await CollectionController.remove(userObjData._id, collectionID);
