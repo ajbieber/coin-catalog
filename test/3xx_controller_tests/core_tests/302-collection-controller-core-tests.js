@@ -44,6 +44,7 @@ describe('302-collection-controller-core-tests', () => {
 
    it('should create a new collection', testCreateCollection);
    it('should find a collection', testFindCollection);
+   it('should update a collection', testUpdateCollection);
    it('should delete a collection', testRemoveCollection);
 });
 
@@ -70,9 +71,28 @@ async function testFindCollection() {
     const foundCollection = await CollectionController.find(collectionID);
 
     // Verify the fields match
-    chai.expect(createdCollection.name).to.equal(collectionObjData.name);
-    chai.expect(createdCollection.description).to.equal(collectionObjData.description);
-    chai.expect(createdCollection.user).to.equal(userObjData._id);
+    chai.expect(foundCollection.name).to.equal(collectionObjData.name);
+    chai.expect(foundCollection.description).to.equal(collectionObjData.description);
+    chai.expect(foundCollection.user).to.equal(userObjData._id);
+}
+
+/**
+ * @description Tests that a collection can be updated via the collection
+ * controller.
+ */
+async function testUpdateCollection() {
+    const updateCollectionObj = {
+        description: 'UPDATED description'
+    };
+
+    // Update the collection
+    const updatedCollection = await CollectionController.update(userObjData._id,
+        collectionID, updateCollectionObj);
+
+    // Verify the fields match
+    chai.expect(updatedCollection.name).to.equal(collectionObjData.name);
+    chai.expect(updateCollectionObj.description).to.equal(updateCollectionObj.description); // Updated field
+    chai.expect(updatedCollection.user).to.equal(userObjData._id);
 }
 
 /**
