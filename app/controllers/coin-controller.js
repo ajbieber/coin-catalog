@@ -24,7 +24,7 @@ async function create(userID, newCoin) {
         throw new Error(`User ${userID} does not exist.`);
     }
 
-    // Verify each collection exsits
+    // Verify each collection exists
     const collections = await Collection.find({ _id: newCoin.collections });
     if (collections.length !== newCoin.collections.length) {
         const existingMap = {};

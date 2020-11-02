@@ -20,6 +20,6 @@
   },
   "scripts": {
     "start": "concurrently \"node index.js\" \"react-scripts start\"",
-    "test": "node index.js test"
+    "test": "mocha --recursive --file index.js"
   }
 }
