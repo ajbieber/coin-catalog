@@ -22,6 +22,9 @@ async function create(userID, newCoin) {
     const user = await User.findById(userID);
     if (user === null) {
         throw new Error(`User ${userID} does not exist.`);
+    } else {
+        // Set the user field
+        newCoin.user = user._id;
     }
 
     // Verify each collection exists

@@ -144,6 +144,7 @@ async function coinGrade(grade) {
  * @param {string} grader: The grader to validate.
  */
 async function coinGrader(grader) {
+  grader = grader.toLowerCase();
   // Verify grader is either self or certified grader
   if (!['self', 'pcgs', 'ngc', 'icg', 'anacs'].includes(grader)) {
     throw new Error('Grader must be a known and certified coin grader or self.');

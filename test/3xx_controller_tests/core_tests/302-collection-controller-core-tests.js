@@ -63,7 +63,7 @@ async function testCreateCollection() {
 }
 
 /**
- * @descriptionTests that a collection can be found viua the collection
+ * @descriptionTests that a collection can be found via the collection
  * controller.
  */
 async function testFindCollection() {
