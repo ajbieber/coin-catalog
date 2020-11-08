@@ -4,6 +4,9 @@
     "port": 27017,
     "name": "coin-catalog"
   },
+  "logger": {
+    "colorize": true
+  },
   "server": {
     "port": 1414
   }

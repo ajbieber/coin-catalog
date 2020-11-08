@@ -21,13 +21,15 @@ async function main() {
 	await db.connect();
 
 	const app = express();
+	const router = express.Router();
 
 	// Setup bodyparser
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
 
 	// Setup the routers
-	app.use('/users', userRouter);
+	router.use('/users', userRouter);
+	app.use('/api', router);
 
 	app.listen(global.config.server.port, () => {
 		console.log(`Listening on port ${global.config.server.port}`); // eslint-disable-line
