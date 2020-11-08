@@ -11,7 +11,7 @@
 const chai = require('chai');
 
 describe('000-init-tests', () => {
-  it('should verify that chai assertions work properly', basicAssertion);
+	it('should verify that chai assertions work properly', basicAssertion);
 });
 
 /**
@@ -19,6 +19,6 @@ describe('000-init-tests', () => {
  * @param done
  */
 function basicAssertion(done) {
-  chai.expect(2 + 2).to.equal(4);
-  done();
+	chai.expect(2 + 2).to.equal(4);
+	done();
 }

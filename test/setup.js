@@ -7,9 +7,9 @@
 const db = require('../app/lib/db');
 
 before(async () => {
-  await db.connect();
+	await db.connect();
 });
 
 after(async () => {
-  await db.disconnect();
+	await db.disconnect();
 });

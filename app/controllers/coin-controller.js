@@ -18,35 +18,35 @@ const User = require('../models/user');
  * @returns {Promise<Coin>}
  */
 async function create(userID, newCoin) {
-    // Verify the user exists
-    const user = await User.findById(userID);
-    if (user === null) {
-        throw new Error(`User ${userID} does not exist.`);
-    } else {
-        // Set the user field
-        newCoin.user = user._id;
-    }
+	// Verify the user exists
+	const user = await User.findById(userID);
+	if (user === null) {
+		throw new Error(`User ${userID} does not exist.`);
+	} else {
+		// Set the user field
+		newCoin.user = user._id;
+	}
 
-    // Verify each collection exists
-    const collections = await Collection.find({ _id: newCoin.collections });
-    if (collections.length !== newCoin.collections.length) {
-        const existingMap = {};
-        collections.forEach((c) => {
-            existingMap[c._id] = 1;
-        });
+	// Verify each collection exists
+	const collections = await Collection.find({ _id: newCoin.collections });
+	if (collections.length !== newCoin.collections.length) {
+		const existingMap = {};
+		collections.forEach((c) => {
+			existingMap[c._id] = 1;
+		});
 
-        const missingCollections = newCoin.collections
-            .filter((c) => !existingMap[c])
-            .map(c => c._id);
-        throw new Error ('Unable to create new coin. Collections '
-            + `[${missingCollections.toString()}] do not exist.`)
-    }
+		const missingCollections = newCoin.collections
+			.filter((c) => !existingMap[c])
+			.map(c => c._id);
+		throw new Error ('Unable to create new coin. Collections '
+            + `[${missingCollections.toString()}] do not exist.`);
+	}
 
-    // Create the coin
-    const coin = new Coin(newCoin);
-    await coin.save();
+	// Create the coin
+	const coin = new Coin(newCoin);
+	await coin.save();
 
-    return coin;
+	return coin;
 }
 
 /**
@@ -55,7 +55,7 @@ async function create(userID, newCoin) {
  * @returns {Promise<Coin>}
  */
 async function find(coinID) {
-    return Coin.findById(coinID);
+	return Coin.findById(coinID);
 }
 
 /**
@@ -66,32 +66,32 @@ async function find(coinID) {
  * @returns {Promise<Coin>}
  */
 async function update(userID, coinID, updateObj) {
-    // Verify the user exists
-    if (await User.findById(userID) === null) {
-        throw new Error(`User ${userID} does not exist.`);
-    }
+	// Verify the user exists
+	if (await User.findById(userID) === null) {
+		throw new Error(`User ${userID} does not exist.`);
+	}
 
-    // Find the coin
-    const coin = await Coin.findById(coinID);
+	// Find the coin
+	const coin = await Coin.findById(coinID);
 
-    // Verify the user owns the coin
-    if (coin.user !== userID) {
-        throw new Error(`User ${userID} cannot update coin ${coinID}.`);
-    }
+	// Verify the user owns the coin
+	if (coin.user !== userID) {
+		throw new Error(`User ${userID} cannot update coin ${coinID}.`);
+	}
 
-    // Update each field in the coin
-    Object.keys(updateObj).forEach((key) => {
-        // Ensure the property exists
-        if (coin._doc.hasOwnProperty(key)) {
-            coin[key] = updateObj[key];
-        }
-    });
+	// Update each field in the coin
+	Object.keys(updateObj).forEach((key) => {
+		// Ensure the property exists
+		if (coin._doc.hasOwnProperty(key)) {
+			coin[key] = updateObj[key];
+		}
+	});
 
-    // Update the coin
-    await coin.save();
+	// Update the coin
+	await coin.save();
 
-    // Return the updated coin
-    return Coin.findById(coinID);
+	// Return the updated coin
+	return Coin.findById(coinID);
 }
 
 /**
@@ -101,13 +101,13 @@ async function update(userID, coinID, updateObj) {
  * @returns {Promise<void>}
  */
 async function remove(userID, coinID) {
-    // Delete one coin matching the id and user
-    await Coin.deleteOne({ user: userID, _id: coinID });
+	// Delete one coin matching the id and user
+	await Coin.deleteOne({ user: userID, _id: coinID });
 }
 
 module.exports = {
-    create,
-    find,
-    update,
-    remove
+	create,
+	find,
+	update,
+	remove
 };

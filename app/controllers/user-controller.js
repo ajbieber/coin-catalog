@@ -17,23 +17,23 @@ const User = require('../models/user');
  * @returns {Promise<User>}
  */
 async function create(newUser) {
-  // Verify the user does not already exist in the database
-  if ((await User.findById(newUser._id)) !== null) {
-    throw new Error(`User with the username ${newUser._id} already exists.`);
-  }
+	// Verify the user does not already exist in the database
+	if ((await User.findById(newUser._id)) !== null) {
+		throw new Error(`User with the username ${newUser._id} already exists.`);
+	}
 
-  // Create the user
-  const user = new User(newUser);
-  await user.save();
+	// Create the user
+	const user = new User(newUser);
+	await user.save();
 
-  // Create the default collection
-  const defaultCollection = new Collection({
-    name: "All Coins",
-    user: user._id
-  });
-  await defaultCollection.save();
+	// Create the default collection
+	const defaultCollection = new Collection({
+		name: 'All Coins',
+		user: user._id
+	});
+	await defaultCollection.save();
 
-  return user;
+	return user;
 }
 
 /**
@@ -42,7 +42,7 @@ async function create(newUser) {
  * @returns {Promise<User>}
  */
 async function find(userID) {
-  return User.findById(userID);
+	return User.findById(userID);
 }
 
 /**
@@ -52,22 +52,22 @@ async function find(userID) {
  * @returns {Promise<User>}
  */
 async function update(id, updateObj) {
-  // Find the user
-  const user = await User.findById(id);
+	// Find the user
+	const user = await User.findById(id);
 
-  // Update each field in the user
-  Object.keys(updateObj).forEach((key) => {
-    // Ensure the property exists
-    if (user._doc.hasOwnProperty(key)) {
-      user[key] = updateObj[key];
-    }
-  });
+	// Update each field in the user
+	Object.keys(updateObj).forEach((key) => {
+		// Ensure the property exists
+		if (user._doc.hasOwnProperty(key)) {
+			user[key] = updateObj[key];
+		}
+	});
 
-  // Update the user
-  await user.save();
+	// Update the user
+	await user.save();
 
-  // Return the updated user
-  return User.findById(id);
+	// Return the updated user
+	return User.findById(id);
 }
 
 /**
@@ -76,19 +76,19 @@ async function update(id, updateObj) {
  * @returns {Promise<void>}
  */
 async function remove(userID) {
-  // Find and delete all the coins the user owns
-  await Coin.deleteMany({ user: userID });
+	// Find and delete all the coins the user owns
+	await Coin.deleteMany({ user: userID });
 
-  // Find and delete all the collections the user owns
-  await Collection.deleteMany({ user: userID });
+	// Find and delete all the collections the user owns
+	await Collection.deleteMany({ user: userID });
 
-  // Find and delete the user
-  await User.findByIdAndDelete(userID);
+	// Find and delete the user
+	await User.findByIdAndDelete(userID);
 }
 
 module.exports = {
-  create,
-  find,
-  update,
-  remove
+	create,
+	find,
+	update,
+	remove
 };

@@ -15,27 +15,27 @@ const validate = require('../lib/validate');
 
 
 const CollectionSchema = mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-    default: uuidv4,
-    validate: validate.Collection._id
-  },
-  name: {
-    type: String,
-    required: true,
-    validate: validate.Collection.name
-  },
-  description: {
-    type: String,
-    default: ''
-  },
-  user: {
-    type: String,
-    ref: 'User',
-    index: true,
-    required: true
-  }
+	_id: {
+		type: String,
+		required: true,
+		default: uuidv4,
+		validate: validate.Collection._id
+	},
+	name: {
+		type: String,
+		required: true,
+		validate: validate.Collection.name
+	},
+	description: {
+		type: String,
+		default: ''
+	},
+	user: {
+		type: String,
+		ref: 'User',
+		index: true,
+		required: true
+	}
 });
 
 module.exports = mongoose.model('Collection', CollectionSchema);

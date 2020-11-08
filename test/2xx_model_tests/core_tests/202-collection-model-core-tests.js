@@ -16,8 +16,8 @@ const Collection = require('../../../app/models/collection');
 let collectionID = null;
 
 describe('202-collection-model-core-tests', () => {
-  it('should create a new collection', testCreateCollection);
-  it('should delete a collection', testRemoveCollection);
+	it('should create a new collection', testCreateCollection);
+	it('should delete a collection', testRemoveCollection);
 });
 
 /**
@@ -26,23 +26,23 @@ describe('202-collection-model-core-tests', () => {
  * properly.
  */
 async function testCreateCollection() {
-  // Define the collection
-  const collectionObj = new Collection({
-    name: 'My Collection',
-    description: 'This is my test collection.',
-    user: 'testuser00'
-  });
-  // Create the collection
-  await collectionObj.save();
+	// Define the collection
+	const collectionObj = new Collection({
+		name: 'My Collection',
+		description: 'This is my test collection.',
+		user: 'testuser00'
+	});
+	// Create the collection
+	await collectionObj.save();
 
-  // Find the collection in the database
-  const createdCollection = await Collection.findById(collectionObj._id);
-  collectionID = createdCollection._id;
+	// Find the collection in the database
+	const createdCollection = await Collection.findById(collectionObj._id);
+	collectionID = createdCollection._id;
 
-  // Verify the fields match
-  chai.expect(createdCollection.name).to.equal(collectionObj.name);
-  chai.expect(createdCollection.description).to.equal(collectionObj.description);
-  chai.expect(createdCollection.user).to.equal(collectionObj.user);
+	// Verify the fields match
+	chai.expect(createdCollection.name).to.equal(collectionObj.name);
+	chai.expect(createdCollection.description).to.equal(collectionObj.description);
+	chai.expect(createdCollection.user).to.equal(collectionObj.user);
 }
 
 /**
@@ -51,10 +51,10 @@ async function testCreateCollection() {
  * properly.
  */
 async function testRemoveCollection() {
-  // Delete the collection
-  await Collection.findByIdAndRemove(collectionID);
+	// Delete the collection
+	await Collection.findByIdAndRemove(collectionID);
 
-  // Attempt to find the collection, expecting the result to be null
-  chai.expect(await Collection.findOne({ _id: collectionID })).to.equal(null);
+	// Attempt to find the collection, expecting the result to be null
+	chai.expect(await Collection.findOne({ _id: collectionID })).to.equal(null);
 }
 
