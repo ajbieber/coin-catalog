@@ -12,6 +12,7 @@ const express = require('express');
 
 // Internal Modules
 const db = require('./lib/db');
+const logger = require('./lib/logger');
 const userRouter = require('./routes/user-routes');
 
 global.config = require('../config/default.json');
@@ -26,6 +27,12 @@ async function main() {
 	// Setup bodyparser
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
+
+	// Log every HTTP route
+	router.use('/', function(req, res, next) {
+		logger.http(`${req.method} ${req.originalUrl}`);
+		next();
+	});
 
 	// Setup the routers
 	router.use('/users', userRouter);

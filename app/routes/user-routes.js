@@ -17,15 +17,10 @@ const UserController = require('../controllers/user-controller');
 // Init router
 const router = express.Router();
 
-router.use('/', function(req, res, next) {
-	logger.http(`${req.method} ${req.originalUrl}`);
-	next();
-});
-
 router.route('/:id')
 
 	/**
-     * @description API Route for retrieving users
+     * @description API route for retrieving users
      */
 	.get(async function(req, res) {
 		// Find the user
@@ -41,7 +36,7 @@ router.route('/:id')
 	})
 
 	/**
-     * @description API Route for creating new users
+     * @description API route for creating new users
      */
 	.post(async function (req, res) {
 		try {
@@ -59,7 +54,27 @@ router.route('/:id')
 	})
 
 	/**
-     * @description API Route for deleting users
+	 * @description API route for updating existing users
+	 */
+	.patch(auth, async function(req, res) {
+		try {
+			// If authenticated user is different from user to be updated, reject
+			if (req.user._id !== req.params.id) {
+				res.sendStatus(403);
+			}
+			else {
+				const updatedUser = await UserController.update(req.params.id, req.body);
+				res.send(updatedUser);
+			}
+		}
+		catch(error) {
+			logger.error(error);
+			res.sendStatus(500);
+		}
+	})
+
+	/**
+     * @description API route for deleting users
      */
 	.delete(auth, async function(req, res) {
 		try {
