@@ -11,6 +11,7 @@ const express = require('express');
 
 // Internal Modules
 const auth = require('../lib/auth');
+const { BadRequestError, NotFoundError } = require('../lib/error');
 const logger = require('../lib/logger');
 const UserController = require('../controllers/user-controller');
 
@@ -28,7 +29,8 @@ router.route('/:id')
 
 		// If no user was found, return a 404
 		if (user === null) {
-			res.sendStatus(404);
+			const error = new NotFoundError(`User [${req.params.id}] was not found.`);
+			res.status(error.code).send(error.message);
 		}
 		else {
 			res.send(user);
