@@ -10,6 +10,8 @@
 const crypto = require('crypto');
 
 // Internal Modules
+const { PermissionError } = require('./error');
+const { respond } = require('./utils');
 const UserController = require('../controllers/user-controller');
 
 module.exports = async function authenticate(req, res, next) {
@@ -28,7 +30,8 @@ module.exports = async function authenticate(req, res, next) {
 
 		// User does not exist
 		if (user === null) {
-			return res.sendStatus(401);
+			const error = new PermissionError('Username or password is incorrect.');
+			return respond(res, error);
 		}
 
 		// Hash the password
@@ -36,7 +39,8 @@ module.exports = async function authenticate(req, res, next) {
 
 		// Verify the passwords match
 		if (derivedKey.toString('hex') !== user.password) {
-			return res.sendStatus(401);
+			const error = new PermissionError('Username or password is incorrect.');
+			return respond(res, error);
 		}
 	}
 

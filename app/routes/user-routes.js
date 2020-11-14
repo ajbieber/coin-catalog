@@ -11,8 +11,9 @@ const express = require('express');
 
 // Internal Modules
 const auth = require('../lib/auth');
-const { BadRequestError, NotFoundError } = require('../lib/error');
+const { UnauthorizedError, NotFoundError } = require('../lib/error');
 const logger = require('../lib/logger');
+const { respond } = require('../lib/utils');
 const UserController = require('../controllers/user-controller');
 
 // Init router
@@ -24,16 +25,20 @@ router.route('/:id')
      * @description API route for retrieving users
      */
 	.get(async function(req, res) {
-		// Find the user
-		const user = await UserController.find(req.params.id);
+		try {
+			// Find the user
+			const user = await UserController.find(req.params.id);
 
-		// If no user was found, return a 404
-		if (user === null) {
-			const error = new NotFoundError(`User [${req.params.id}] was not found.`);
-			res.status(error.code).send(error.message);
+			// If no user was found, return a 404
+			if (user === null) {
+				const error = new NotFoundError(`User [${req.params.id}] was not found.`);
+				respond(res, error);
+			} else {
+				respond(res, user);
+			}
 		}
-		else {
-			res.send(user);
+		catch (error) {
+			respond(res, error);
 		}
 	})
 
@@ -47,11 +52,10 @@ router.route('/:id')
 			}
 
 			const user = await UserController.create(req.body);
-			res.send(user);
+			respond(res, user);
 		}
 		catch (error) {
-			logger.error(error);
-			res.sendStatus(500);
+			respond(res, error);
 		}
 	})
 
@@ -62,16 +66,17 @@ router.route('/:id')
 		try {
 			// If authenticated user is different from user to be updated, reject
 			if (req.user._id !== req.params.id) {
-				res.sendStatus(403);
+				const error = new UnauthorizedError(`User [${req.user._id}] does`
+					+ `not have permission to update user ${req.params.id}.`);
+				respond(res, error);
 			}
 			else {
 				const updatedUser = await UserController.update(req.params.id, req.body);
-				res.send(updatedUser);
+				respond(res, updatedUser);
 			}
 		}
 		catch(error) {
-			logger.error(error);
-			res.sendStatus(500);
+			respond(res, error);
 		}
 	})
 
@@ -82,16 +87,17 @@ router.route('/:id')
 		try {
 			// If authenticated user is different from user to be deleted, reject
 			if (req.user._id !== req.params.id) {
-				res.sendStatus(403);
+				const error = new UnauthorizedError(`User [${req.user._id}] does`
+					+ `not have permission to delete user ${req.params.id}.`);
+				respond(res, error);
 			}
 			else {
 				await UserController.remove(req.params.id);
-				res.sendStatus(200);
+				respond(res, "");
 			}
 		}
 		catch (error) {
-			logger.error(error);
-			res.sendStatus(500);
+			respond(res, error);
 		}
 	});
 

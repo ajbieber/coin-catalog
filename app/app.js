@@ -13,6 +13,9 @@ const express = require('express');
 // Internal Modules
 const db = require('./lib/db');
 const logger = require('./lib/logger');
+const coinRouter = require('./routes/coin-routes');
+const collectionRouter = require('./routes/collection-routes');
+const generalRouter = require('./routes/general-routes');
 const userRouter = require('./routes/user-routes');
 
 global.config = require('../config/default.json');
@@ -35,7 +38,10 @@ async function main() {
 	});
 
 	// Setup the routers
+	router.use('/', generalRouter);
 	router.use('/users', userRouter);
+	router.use('/collections', collectionRouter);
+	router.use('/coins', coinRouter);
 	app.use('/api', router);
 
 	app.listen(global.config.server.port, () => {
