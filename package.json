@@ -8,7 +8,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "axios": "^0.21.0",
     "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.10.0",
     "react": "^16.13.1",
@@ -17,7 +19,7 @@
     "winston": "^3.3.3"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode development",
     "clean": "rm -rf node_modules",
     "lint": "eslint app/** test/**",
     "start": "node app/app.js",

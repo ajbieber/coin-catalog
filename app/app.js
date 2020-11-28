@@ -8,6 +8,7 @@
 
 // NPM Modules
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const express = require('express');
 
 // Internal Modules
@@ -30,6 +31,9 @@ async function main() {
 	// Setup bodyparser
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
+
+	// Setup cors
+	app.use(cors());
 
 	// Log every HTTP route
 	router.use('/', function(req, res, next) {
