@@ -6,6 +6,9 @@
  * @description General utility functions
  */
 
+// Internal Modules
+const logger = require('./logger');
+
 /**
  * @description Sends a response based on the data passed in.
  *
@@ -19,6 +22,9 @@ function respond(res, data) {
 		if (!code) {
 			code = 500
 		}
+
+		logger.warn(data.message);
+
 		res.status(code).send(data.message);
 	}
 	else {

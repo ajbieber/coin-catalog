@@ -8,6 +8,9 @@
     "colorize": true
   },
   "server": {
-    "port": 1414
+    "port": 1414,
+    "session": {
+      "secret": "shhhhhhhhhh"
+    }
   }
 }

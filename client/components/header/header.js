@@ -2,6 +2,8 @@ import React from 'react';
 import { Navbar, NavbarBrand, NavbarText } from 'reactstrap';
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
+import "./header.scss"
+
 export default class Header extends React.Component {
 	constructor(props) {
 		super(props);

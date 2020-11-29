@@ -10,6 +10,9 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+
 
 // Internal Modules
 const db = require('./lib/db');
@@ -27,6 +30,28 @@ async function main() {
 
 	const app = express();
 	const router = express.Router();
+
+	// Setup session store
+	const store = new MongoDBStore({
+		uri: `mongodb://${global.config.db.url}:${global.config.db.port}/${global.config.db.name}`,
+		collection: 'sessions'
+	});
+
+	// Catch errors
+	store.on('error', function(error) {
+		logger.fatal(error);
+		process.exit(-1);
+	});
+
+	app.use(session({
+		secret: global.config.server.session.secret,
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+		},
+		store: store,
+		resave: true,
+		saveUninitialized: true
+	}));
 
 	// Setup bodyparser
 	app.use(bodyParser.urlencoded({ extended: false }));

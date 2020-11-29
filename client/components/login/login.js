@@ -1,37 +1,31 @@
-import React, { Component } from 'react';
-import { Input, Label, Form, FormGroup } from 'reactstrap'
+import React from 'react';
+import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+// Node modules
 import { Buffer } from 'buffer';
 
-class Login extends Component {
+// Local Imports
+import LoginForm from './components/login-form';
+import CreateForm from './components/create-form';
+
+export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			username: "",
-			password: "",
-			error: null
-		};
+			loginForm: true
+		}
 
-		console.log(this.props);
-
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleLogin = this.handleLogin.bind(this);
+		this.handleNewUser = this.handleNewUser.bind(this);
+		this.switchForms = this.switchForms.bind(this);
 	}
 
-	handleChange(event) {
-		const value = event.target.value;
-		this.setState({
-			...this.state,
-			[event.target.name]: value
-		});
-	}
-
-	 handleSubmit(event) {
-		event.preventDefault();
+	 handleLogin(data) {
 		// Format the username/password
-		const token = Buffer.from(`${this.state.username}:${this.state.password}`, 'utf8').toString('base64');
+		const token = Buffer.from(`${data.username}:${data.password}`, 'utf8').toString('base64');
 
 		axios.post(`http://localhost:1414/api/login`, {}, {
 			headers: {
@@ -49,35 +43,38 @@ class Login extends Component {
 		});
 	}
 
+	handleNewUser(data) {
+		// Format the body
+		const body = {
+			_id: data.username,
+			password: data.password,
+			email: data.email
+		}
+
+		axios.post(`http://localhost:1414/api/users/${body._id}`, body)
+		.then(() => {
+			this.props.handleLogin();
+		})
+		.catch(err => {
+			// this.props.toggleError(err.message);
+		})
+		.then(() => {
+
+		});
+	}
+
+	switchForms() {
+		this.setState({ loginForm: !this.state.loginForm})
+	}
+
 	render() {
 		return (
 			<>
-				<Form onSubmit={this.handleSubmit}>
-					<FormGroup>
-						<Label for="usernameInput">Username</Label>
-						<Input
-							name="username"
-							id="usernameInput"
-							type="text"
-							value={this.state.username}
-							onChange={this.handleChange}
-						/>
-					</FormGroup>
-					<FormGroup>
-						<Label for="passwordInput">Password</Label>
-						<Input
-							name="password"
-							id="passwordInput"
-							type="password"
-							value={this.state.password}
-							onChange={this.handleChange}
-						/>
-					</FormGroup>
-					<input type="submit" value="Submit" />
-				</Form>
+			{ this.state.loginForm
+				? <LoginForm handleSubmit={this.handleLogin} switchForms={this.switchForms}/>
+				: <CreateForm handleSubmit={this.handleNewUser} switchForms={this.switchForms}/>
+			}
 			</>
 		);
 	}
 }
-
-export default Login
