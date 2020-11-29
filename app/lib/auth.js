@@ -15,6 +15,7 @@ const { respond } = require('./utils');
 const UserController = require('../controllers/user-controller');
 
 module.exports = async function authenticate(req, res, next) {
+	console.log(req.headers);
 	const header = req.headers.authorization;
 	let user = null;
 

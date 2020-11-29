@@ -22,7 +22,7 @@ router.get('/status', async function(reg, res) {
 	respond(res, "Server is up!");
 });
 
-router.get('/login', auth, async function(req, res) {
+router.post('/login', auth, async function(req, res) {
 	console.log("Successfully logged in");
 	respond(res, "Logged in!");
 })

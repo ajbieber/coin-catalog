@@ -7,7 +7,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'build'),
 		filename: 'bundle.js',
 		chunkFilename: '[id].js',
-		publicPath: ''
+		publicPath: '/'
 	},
 	resolve: {
 		extensions: ['.js', '.jsx']
@@ -18,8 +18,36 @@ module.exports = {
 				test: /\.js$/,
 				loader: 'babel-loader',
 				exclude: /node_modules/
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{loader: 'style-loader'},
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								localIdentName: "[name]__[local]___[hash:base64:5]",
+							},
+							sourceMap: true
+						}
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions: {
+								plugins: [
+									['autoprefixer', {},],
+								],
+							},
+						}
+					}
+				]
 			}
 		]
+	},
+	devServer: {
+		historyApiFallback: true,
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
